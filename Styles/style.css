@@ -1,0 +1,317 @@
+/* === VARIABLES DE COLOR (Tu Paleta) === */
+:root {
+    --bg-space: #050b14;      /* Azul muy oscuro / Negro fondo */
+    --ship-blue: #40E0D0;     /* Turquesa (Tu Nave) */
+    --planet-orange: #FF8C00; /* Naranja (El Planeta) */
+    --water-mint: #98FF98;    /* Verde Menta (Detalles) */
+    --font-main: 'Orbitron', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-space);
+    color: white;
+    font-family: var(--font-main);
+    height: 100vh;
+    overflow: hidden; /* Evita barras de scroll por las estrellas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* === FONDO DE ESTRELLAS === */
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: zoom 3s linear infinite;
+}
+
+@keyframes zoom {
+    from {
+        transform: translateZ(0) scale(0.1);
+        opacity: 0.1;
+    }
+    to {
+        transform: translateZ(100px) scale(1.5); /* Simula movimiento hacia ti */
+        opacity: 1;
+    }
+}
+
+/* === INTERFAZ PRINCIPAL === */
+.cockpit-container {
+    text-align: center;
+    width: 95%;
+    max-width: 1000px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    height: 95vh;
+    justify-content: center;
+}
+
+/* === CABECERA NEÓN === */
+header {
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+
+.neon-title {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 
+        0 0 5px var(--ship-blue),
+        0 0 10px var(--ship-blue),
+        0 0 20px var(--ship-blue),
+        0 0 40px var(--planet-orange); /* Mezcla de colores nave/planeta */
+    letter-spacing: 5px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--water-mint);
+    letter-spacing: 2px;
+}
+
+.blink {
+    animation: blinker 1.5s linear infinite;
+    color: var(--planet-orange);
+    font-weight: bold;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* === MARCO DEL JUEGO (MONITOR) === */
+.game-frame {
+    position: relative;
+    border: 2px solid var(--ship-blue);
+    background-color: black; /* Fondo negro para el juego */
+    box-shadow: 0 0 20px rgba(64, 224, 208, 0.2);
+    padding: 4px;
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    min-height: 400px;
+}
+
+/* Decoraciones de las esquinas del marco */
+.corner-decoration {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--planet-orange);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.top-left { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+.top-right { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+.bottom-left { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+.bottom-right { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+.game-frame:hover .corner-decoration {
+    width: 30px;
+    height: 30px;
+    box-shadow: 0 0 10px var(--planet-orange);
+}
+
+/* Contenedor relativo para Unity */
+#game-screen {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* === UNITY INTEGRATION STYLES (Overrides) === */
+#unity-container {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0; 
+    left: 0;
+}
+
+#unity-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    background: #000;
+    outline: none;
+}
+
+/* Barra de Carga Personalizada */
+#unity-loading-bar {
+    position: absolute;
+    left: 50%; 
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 100;
+}
+
+#unity-logo {
+    width: 154px;
+    height: 130px;
+    background: url('../TemplateData/unity-logo-dark.png') no-repeat center; /* Ajusta ruta si tienes el logo */
+    background-size: contain;
+    margin-bottom: 10px;
+    display: none; /* Oculto por defecto para diseño limpio, quita esta línea si quieres verlo */
+}
+
+#unity-progress-bar-empty {
+    width: 200px;
+    height: 10px;
+    border: 1px solid var(--ship-blue);
+    background: rgba(0,0,0,0.8);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#unity-progress-bar-full {
+    width: 0%;
+    height: 100%;
+    background: var(--planet-orange); /* Naranja para la carga */
+    box-shadow: 0 0 10px var(--planet-orange);
+}
+
+/* Footer y Botón Pantalla Completa dentro del juego */
+#unity-footer {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#unity-build-title {
+    font-size: 0.7rem;
+    color: var(--ship-blue);
+    opacity: 0.7;
+    text-transform: uppercase;
+}
+
+#unity-fullscreen-button {
+    width: 30px; 
+    height: 30px;
+    /* Icono SVG incrustado de color turquesa */
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2340E0D0"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>') no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#unity-fullscreen-button:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px var(--ship-blue));
+}
+
+#unity-warning {
+    position: absolute; 
+    top: 10px; 
+    left: 10px;
+    background: rgba(255,0,0,0.8); 
+    color: white;
+    padding: 10px; 
+    display: none; 
+    z-index: 200;
+    font-size: 0.8rem;
+    border: 1px solid red;
+}
+
+/* === PANTALLA DE CONTROLES === */
+.controls-panel {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.panel-section {
+    flex: 1;
+    background: rgba(5, 11, 20, 0.8);
+    border: 1px solid var(--water-mint);
+    padding: 15px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.panel-section h3 {
+    color: var(--planet-orange);
+    border-bottom: 1px solid var(--ship-blue);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.panel-section p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.keys {
+    margin: 10px 0;
+}
+
+.key {
+    display: inline-block;
+    border: 1px solid var(--ship-blue);
+    color: var(--ship-blue);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 0 5px var(--ship-blue) inset;
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+
+/* === EFECTO SCANLINES (RETRO TV) === */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.1) 50%,
+        rgba(0,0,0,0.1)
+    );
+    background-size: 100% 4px;
+    pointer-events: none; /* Permite hacer clic a través de ellas */
+    z-index: 100;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .neon-title { font-size: 1.8rem; }
+    .controls-panel { display: none; } /* Ocultar controles en móvil para ganar espacio */
+    .game-frame { margin-bottom: 0; border-width: 1px; }
+    .cockpit-container { width: 100%; height: 100vh; justify-content: flex-start; padding-top: 10px; }
+}
