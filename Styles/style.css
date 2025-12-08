@@ -1,9 +1,8 @@
-/* === VARIABLES DE COLOR (Tu Paleta) === */
 :root {
-    --bg-space: #050b14;      /* Azul muy oscuro / Negro fondo */
-    --ship-blue: #40E0D0;     /* Turquesa (Tu Nave) */
-    --planet-orange: #FF8C00; /* Naranja (El Planeta) */
-    --water-mint: #98FF98;    /* Verde Menta (Detalles) */
+    --bg-space: #050b14;      
+    --ship-blue: #40E0D0;     
+    --planet-orange: #FF8C00; 
+    --water-mint: #98FF98;    
     --font-main: 'Orbitron', sans-serif;
 }
 
@@ -18,13 +17,12 @@ body {
     color: white;
     font-family: var(--font-main);
     height: 100vh;
-    overflow: hidden; /* Evita barras de scroll por las estrellas */
+    overflow: hidden; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* === FONDO DE ESTRELLAS === */
 #starfield {
     position: fixed;
     top: 0;
@@ -49,12 +47,11 @@ body {
         opacity: 0.1;
     }
     to {
-        transform: translateZ(100px) scale(1.5); /* Simula movimiento hacia ti */
+        transform: translateZ(100px) scale(1.5); 
         opacity: 1;
     }
 }
 
-/* === INTERFAZ PRINCIPAL === */
 .cockpit-container {
     text-align: center;
     width: 95%;
@@ -66,7 +63,6 @@ body {
     justify-content: center;
 }
 
-/* === CABECERA NEÓN === */
 header {
     margin-bottom: 15px;
     flex-shrink: 0;
@@ -79,7 +75,7 @@ header {
         0 0 5px var(--ship-blue),
         0 0 10px var(--ship-blue),
         0 0 20px var(--ship-blue),
-        0 0 40px var(--planet-orange); /* Mezcla de colores nave/planeta */
+        0 0 40px var(--planet-orange); 
     letter-spacing: 5px;
     margin-bottom: 5px;
 }
@@ -100,14 +96,13 @@ header {
     50% { opacity: 0; }
 }
 
-/* === MARCO DEL JUEGO (MONITOR) === */
 .game-frame {
     position: relative;
     border: 2px solid var(--ship-blue);
-    background-color: black; /* Fondo negro para el juego */
+    background-color: black; 
     box-shadow: 0 0 20px rgba(64, 224, 208, 0.2);
     padding: 4px;
-    flex-grow: 1; /* Ocupa el espacio disponible */
+    flex-grow: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -115,7 +110,6 @@ header {
     min-height: 400px;
 }
 
-/* Decoraciones de las esquinas del marco */
 .corner-decoration {
     position: absolute;
     width: 20px;
@@ -137,7 +131,6 @@ header {
     box-shadow: 0 0 10px var(--planet-orange);
 }
 
-/* Contenedor relativo para Unity */
 #game-screen {
     width: 100%;
     height: 100%;
@@ -145,7 +138,6 @@ header {
     overflow: hidden;
 }
 
-/* === UNITY INTEGRATION STYLES (Overrides) === */
 #unity-container {
     width: 100% !important;
     height: 100% !important;
@@ -161,7 +153,6 @@ header {
     outline: none;
 }
 
-/* Barra de Carga Personalizada */
 #unity-loading-bar {
     position: absolute;
     left: 50%; 
@@ -174,11 +165,10 @@ header {
 #unity-logo {
     width: 154px;
     height: 130px;
-    background: url('../TemplateData/unity-logo-dark.png') no-repeat center; /* Ajusta ruta si tienes el logo */
+    background: url('../TemplateData/unity-logo-dark.png') no-repeat center; 
     background-size: contain;
     margin-bottom: 10px;
-    display: none; /* Oculto por defecto para diseño limpio, quita esta línea si quieres verlo */
-}
+    display: none; 
 
 #unity-progress-bar-empty {
     width: 200px;
@@ -193,11 +183,10 @@ header {
 #unity-progress-bar-full {
     width: 0%;
     height: 100%;
-    background: var(--planet-orange); /* Naranja para la carga */
+    background: var(--planet-orange); 
     box-shadow: 0 0 10px var(--planet-orange);
 }
 
-/* Footer y Botón Pantalla Completa dentro del juego */
 #unity-footer {
     position: absolute;
     bottom: 10px;
@@ -218,7 +207,6 @@ header {
 #unity-fullscreen-button {
     width: 30px; 
     height: 30px;
-    /* Icono SVG incrustado de color turquesa */
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2340E0D0"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>') no-repeat center;
     background-size: contain;
     cursor: pointer;
@@ -243,7 +231,6 @@ header {
     border: 1px solid red;
 }
 
-/* === PANTALLA DE CONTROLES === */
 .controls-panel {
     display: flex;
     justify-content: space-between;
@@ -289,7 +276,6 @@ header {
     font-size: 0.9rem;
 }
 
-/* === EFECTO SCANLINES (RETRO TV) === */
 .scanlines {
     position: fixed;
     top: 0;
@@ -304,14 +290,13 @@ header {
         rgba(0,0,0,0.1)
     );
     background-size: 100% 4px;
-    pointer-events: none; /* Permite hacer clic a través de ellas */
+    pointer-events: none; 
     z-index: 100;
 }
 
-/* === RESPONSIVE === */
 @media (max-width: 768px) {
     .neon-title { font-size: 1.8rem; }
-    .controls-panel { display: none; } /* Ocultar controles en móvil para ganar espacio */
+    .controls-panel { display: none; } 
     .game-frame { margin-bottom: 0; border-width: 1px; }
     .cockpit-container { width: 100%; height: 100vh; justify-content: flex-start; padding-top: 10px; }
 }
